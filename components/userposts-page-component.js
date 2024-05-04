@@ -24,7 +24,7 @@ export function renderUserPostsPageComponent({ appEl }) {
 
         if (likesCounter > 1) {
           firstLiker = post.likes[0].name;
-          return `Нравится: <span><strong>${firstLiker}</strong></span> и <span></span><span><strong>${moreLikers}</strong></span>`;
+          return `Нравится: <span><strong>${sanitize(firstLiker)}</strong></span> и <span></span><span><strong>${moreLikers}</strong></span>`;
         }
       }
 
