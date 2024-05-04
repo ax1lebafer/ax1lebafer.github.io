@@ -1,26 +1,26 @@
-import { USER_POSTS_PAGE } from '../routes.js';
-import { renderHeaderComponent } from './header-component.js';
-import { posts, getToken, goToPage } from '../index.js';
-import { sanitize } from '../helpers.js';
-import { like, disLike } from '../api.js';
-import { formatDistanceToNow } from 'date-fns';
-import { ru } from 'date-fns/locale';
+import { USER_POSTS_PAGE } from "../routes.js";
+import { renderHeaderComponent } from "./header-component.js";
+import { posts, getToken, goToPage } from "../index.js";
+import { sanitize } from "../helpers.js";
+import { like, disLike } from "../api.js";
+import { formatDistanceToNow } from "date-fns";
+import { ru } from "date-fns/locale";
 
 export function renderPostsPageComponent({ appEl }) {
   const postsHtml = posts
     .map((post, index) => {
       const likesCounter = post.likes.length;
       let firstLiker = null;
-      const moreLikers = String(' еще ' + (post.likes.length - 1));
+      const moreLikers = String(" еще " + (post.likes.length - 1));
 
       function likersRenderApp() {
         if (likesCounter === 0) {
-          return '';
+          return "";
         }
 
         if (likesCounter === 1) {
           firstLiker = post.likes[0].name;
-          return `Нравится: <span><strong>${firstLiker}</strong></span>`;
+          return `Нравится: <span><strong>${sanitize(firstLiker)}</strong></span>`;
         }
 
         if (likesCounter > 1) {
@@ -45,11 +45,11 @@ export function renderPostsPageComponent({ appEl }) {
             </div>
             <div class="post-likes">
               <button data-post-id="${index}" class="like-button">
-                <img style="${post.isLiked === false ? 'display: block' : 'display: none'}" src="./assets/images/like-not-active.svg">
-                <img style="${post.isLiked === true ? 'display: block' : 'display: none'}" src="./assets/images/like-active.svg">
+                <img style="${post.isLiked === false ? "display: block" : "display: none"}" src="./assets/images/like-not-active.svg">
+                <img style="${post.isLiked === true ? "display: block" : "display: none"}" src="./assets/images/like-active.svg">
               </button>
               <p class="post-likes-text">
-                ${likersRenderApp('')}
+                ${likersRenderApp("")}
               </p>
             </div>
             <p class="post-text">
@@ -63,7 +63,7 @@ export function renderPostsPageComponent({ appEl }) {
           <br>
         </ul>`;
     })
-    .join('');
+    .join("");
 
   appEl.innerHTML = `
     <div class="page-container">
@@ -72,15 +72,15 @@ export function renderPostsPageComponent({ appEl }) {
     </div>`;
 
   renderHeaderComponent({
-    element: document.querySelector('.header-container'),
+    element: document.querySelector(".header-container"),
   });
 
-  const likeButtons = document.querySelectorAll('.like-button');
+  const likeButtons = document.querySelectorAll(".like-button");
 
   for (const likeButton of likeButtons) {
-    likeButton.addEventListener('click', () => {
+    likeButton.addEventListener("click", () => {
       if (getToken() === undefined) {
-        alert('Ставить лайки могут только авторизованные пользователи');
+        alert("Ставить лайки могут только авторизованные пользователи");
         return (likeButton.disabled = true);
       } else {
         likeButton.disabled = false;
@@ -106,9 +106,9 @@ export function renderPostsPageComponent({ appEl }) {
     });
   }
 
-  for (let userEl of document.querySelectorAll('.post-header')) {
+  for (let userEl of document.querySelectorAll(".post-header")) {
     userEl.disabled = false;
-    userEl.addEventListener('click', () => {
+    userEl.addEventListener("click", () => {
       goToPage(USER_POSTS_PAGE, {
         userId: userEl.dataset.userId,
       });
